@@ -1,0 +1,39 @@
+<h2>Today's schedule</h2>
+
+<hr>
+
+<div *ngIf="meds?.length > 0 && calculated">
+
+  <div *ngFor="let med of meds" class="card mb-3">
+    <div class="card-header">{{med.name}}</div>
+    <div class="card-body">
+      <span class="lead">Purpose</span><hr> {{med.purpose}}<br><br>
+      <span class="lead">Today's Doses</span> <hr>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let time of med.toBeTakenAt">
+          
+          <strong class="lead">{{time.hh}}:{{time.mm }}&nbsp;{{time.amorpm}}</strong>
+
+          <span *ngIf="time.timeup && time.taken == false" class="badge badge-danger pull-right">Time's Up!</span>
+
+          <span *ngIf="!time.timeup && time.taken == false" class="badge badge-primary pull-right">{{time.hourRem}} hr {{time.minRem}} min remaining</span>
+
+          <span *ngIf="time.taken" class="pull-right"><i class="fa fa-check fa-lg" aria-hidden="true"></i></span>
+
+          <br>
+          
+          <button *ngIf="time.taken == false" class="btn btn-primary btn-sm pull-right" (click)="time.taken = true;">Taken</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div *ngIf="calculated == false">
+  <h3 class="lead">Loading your Meds Schedule</h3>
+</div>
+
+<h3 *ngIf="meds?.length == 0">
+  You have not added any of your medicines yet! Please add.
+</h3>

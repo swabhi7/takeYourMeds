@@ -1,0 +1,63 @@
+<h3>My Medicines</h3>
+<hr>
+
+<div *ngFor="let med of meds" class="card mb-3">
+
+  <div class="card-header">
+    
+        <strong><kbd>{{med.name}}</kbd></strong> &nbsp;
+        <div class="pull-right">
+            <a routerLink="/meds/edit/{{med.id}}" class="btn btn-sm btn-dark"><i class="fa fa-pencil fa-light" aria-hidden="true"></i></a>
+            &nbsp; 
+            <a routerLink="/meds/delete/{{med.id}}" class="btn btn-sm btn-dark"><i class="fa fa-remove fa-light" aria-hidden="true"></i></a>
+        </div>
+        
+
+  </div>
+    
+  
+
+  <div class="card-body">
+    <table class="table">
+      <tr>
+        <td>
+          Purpose: 
+        </td>
+        <td>
+          {{med.purpose}}
+        </td>
+      </tr>
+      <tr>
+          <td>
+            Composition:
+          </td>
+          <td>
+            {{med.composition}}
+          </td>
+      </tr>
+      <tr>
+          <td>
+            My Review:
+          </td>
+          <td>
+            {{med.myReview}}
+          </td>
+      </tr>
+      <tr>
+          <td>
+            Time (To be taken at):
+          </td>
+          <td>
+            <ul class="list-group">
+                <li class="list-group-item" *ngFor="let time of med.toBeTakenAt">
+                    {{time.hh}} : {{time.mm}} {{time.amorpm}}
+                </li>
+            </ul>
+          </td>
+      </tr>
+    </table>
+  </div>
+
+  
+
+</div>
