@@ -1,0 +1,70 @@
+<div class="card card-body mb-3" *ngIf="fetchedMed">
+
+  <h2>Edit Medicine</h2>
+
+  <form #medForm="ngForm" (ngSubmit)="onSubmit(medForm)">
+    <div class="form-group">
+      <label>Name</label>
+      <input 
+        type="text" 
+        class="form-control" 
+        name="name" 
+        [(ngModel)]="med.name"
+        #medName="ngModel"
+        required
+        minlength="2"
+        [ngClass]="{'is-invalid': medName.errors && medName.touched}"
+      >
+      <div [hidden]="!medName.errors?.required" class="invalid-feedback">Name is required</div>
+      <div [hidden]="!medName.errors?.minlength" class="invalid-feedback">Must be at least 2 characters</div>
+    </div>
+    <div class="form-group">
+      <label>Purpose</label>
+      <input type="text" class="form-control" name="purpose" [(ngModel)]="med.purpose">
+    </div>
+    <div class="form-group">
+      <label>Composition</label>
+      <input type="text" class="form-control" name="composition" [(ngModel)]="med.composition">
+    </div>
+    <div class="form-group">
+      <label>Dose per Day</label>
+      <input type="text" class="form-control" name="dose" [(ngModel)]="dose">
+      <button class="btn btn-primary" type="button" [disabled]="!dose" (click)="doseAdded($event)">Add times of Doses</button>
+    </div>
+    <div class="form-group">
+      <label>When to take (Time)</label>
+      <div *ngFor="let time of med.toBeTakenAt" class="container">
+          <div class="row">
+              <div class="col-xs-3">
+                <select class="form-control" name="hh" [(ngModel)]="time.hh">
+                  <option *ngFor="let h of hoursArr">{{h}}</option>
+                </select>
+              </div>
+              <div class="col-xs-3">
+                <select class="form-control" name="mm" [(ngModel)]="time.mm">
+                  <option *ngFor="let m of minsArr">{{m}}</option>
+                </select>
+              </div>
+              <div class="col-xs-3">
+                <select class="form-control" name="amorpm" [(ngModel)]="time.amorpm">
+                  <option>am</option>
+                  <option>pm</option>
+                </select>
+              </div>
+              <div class="col-xs-3"></div>
+            </div>
+      </div>
+      
+    </div>
+    <div class="form-group">
+      <label>Review</label>
+      <input type="text" class="form-control" name="myReview" [(ngModel)]="med.myReview">
+    </div>
+    <button [disabled]="!medForm.valid" type="submit" class="btn btn-block btn-primary mb-3">Edit Medicine</button>
+  </form>
+
+</div>
+
+<div *ngIf="!fetchedMed">
+  Loading
+</div>

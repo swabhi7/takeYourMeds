@@ -67,7 +67,35 @@ export class MedService {
     return of(this.meds);
   }
 
+  getMed(id:string): Observable<Med>{
+    console.log('id in service is - ' + id);
+    for(let med of this.meds){
+      console.log('inside for - id - ' + med.id);
+      if(med.id == id){
+        console.log('inside if');
+        return of(med);
+      }
+    }
+  }
+
   addMed(med:Med){
     this.meds.unshift(med);
   }
+
+  editMed(med:Med){
+    
+    let index:number;
+    for(let med1 of this.meds){
+      if(med1.id == med.id){
+        index = this.meds.indexOf(med1);
+      }
+    }
+    this.meds.splice(index, 1);
+
+    this.meds.unshift(med);
+
+  }
+
+
+
 }

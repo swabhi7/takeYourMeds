@@ -11,6 +11,7 @@ import { MyProfileComponent } from './components/my-profile/my-profile.component
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { MyMedsDetailsComponent } from './components/my-meds-details/my-meds-details.component';
 import { AddMedsComponent } from './components/add-meds/add-meds.component';
+import { EditMedComponent } from './components/edit-med/edit-med.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { AddMedsComponent } from './components/add-meds/add-meds.component';
     MyProfileComponent,
     PageNotFoundComponent,
     MyMedsDetailsComponent,
-    AddMedsComponent
+    AddMedsComponent,
+    EditMedComponent
   ],
   imports: [
     BrowserModule,

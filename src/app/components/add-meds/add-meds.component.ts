@@ -56,8 +56,16 @@ export class AddMedsComponent implements OnInit {
     //medForm.value.toBeTakenAt.mm = 15;
     //this.meds.unshift(medForm.value);
     medForm.value.toBeTakenAt = this.med.toBeTakenAt;
+    medForm.value.id = this.generateId();
     this.medService.addMed(medForm.value);
     console.log(medForm.value);
+  }
+
+  generateId():string{
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
   }
 
   addUser(){
