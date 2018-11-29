@@ -90,13 +90,17 @@ export class MedsComponent implements OnInit {
         totalMin = time.mm;
       }
       else{
-        totalMin = (time.hh + 12) * 60 + time.mm;
+        console.log('hh ' + time.hh + ' mm ' + time.mm);
+        totalMin = ((time.hh + 12) * 60) + (time.mm);
+        console.log('tm ' + totalMin);
       }     
     }
     if(totalMin - totalCurrentMin <= 0){
       time.timeup = true;
     }
     else{
+      console.log('totalmin ' + totalMin + ' total current min ' + totalCurrentMin);
+      console.log(this.currentHour);
       time.timeup = false;
       let minRem = totalMin - totalCurrentMin;
       time.hourRem = Math.floor(minRem / 60);
@@ -118,6 +122,13 @@ export class MedsComponent implements OnInit {
     //this.med.toBeTakenAt.hh = 10;
     //this.med.toBeTakenAt.mm = 15;
     this.meds.unshift(this.med);
+  }
+
+  takenClicked(time:any, med: Med){
+    console.log(this.meds);
+    time.taken = true;
+    this.medService.editMed(med);
+    console.log(this.meds);
   }
 
 }

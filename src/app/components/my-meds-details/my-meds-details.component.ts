@@ -19,4 +19,8 @@ export class MyMedsDetailsComponent implements OnInit {
     });
   }
 
+  deleteClicked(id:string){
+    this.medService.deleteMed(id);
+  }
+
 }

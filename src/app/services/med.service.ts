@@ -96,6 +96,18 @@ export class MedService {
 
   }
 
+  deleteMed(id:string){
+    let index:number;
+    for(let med1 of this.meds){
+      if(med1.id == id){
+        index = this.meds.indexOf(med1);
+      }
+    }
+    this.meds.splice(index, 1);
+
+  
+  }
+
 
 
 }

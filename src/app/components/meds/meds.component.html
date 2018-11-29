@@ -22,7 +22,7 @@
 
           <br>
           
-          <button *ngIf="time.taken == false" class="btn btn-primary btn-sm pull-right" (click)="time.taken = true;">Taken</button>
+          <button *ngIf="time.taken == false" class="btn btn-primary btn-sm pull-right" (click)="takenClicked(time, med)">Taken</button>
         </li>
       </ul>
     </div>
