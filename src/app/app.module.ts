@@ -13,6 +13,8 @@ import { MyMedsDetailsComponent } from './components/my-meds-details/my-meds-det
 import { AddMedsComponent } from './components/add-meds/add-meds.component';
 import { EditMedComponent } from './components/edit-med/edit-med.component';
 
+import {HttpClientModule} from '@angular/common/http';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +29,8 @@ import { EditMedComponent } from './components/edit-med/edit-med.component';
   imports: [
     BrowserModule,
     FormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [
     MedService

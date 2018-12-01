@@ -3,15 +3,29 @@ import {Observable} from 'rxjs';
 import {of} from 'rxjs';
 import {Med} from '../models/Med';
 
+import {HttpClient} from '@angular/common/http';
+
 @Injectable({
   providedIn: 'root'
 })
 export class MedService {
 
   meds:Med[] = [];
+  fetchComplete: boolean = false;
 
-  constructor() { 
-    this.meds = [
+  constructor(private http: HttpClient) { 
+
+    console.log('inside constr');
+
+    this.http.get<{message: string, meds: Med[]}>('http://localhost:3000/api/meds').subscribe((medsData) => {
+      this.meds = medsData.meds;
+      this.fetchComplete = true;
+      console.log('inside http get - done');
+    });
+
+    console.log('after');
+
+    /*this.meds = [
       {
         id: 'fdafadds',
         name: 'Medicine 1',
@@ -59,12 +73,19 @@ export class MedService {
         ],
         myReview: 'Okay okay'
       }
-    ];
+    ];*/
+
+
     
   }
 
   getMeds(): Observable<Med[]>{
+    console.log('inside getMeds()');
+
+    while(this.fetchComplete != true){}
+
     return of(this.meds);
+
   }
 
   getMed(id:string): Observable<Med>{

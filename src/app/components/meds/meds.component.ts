@@ -30,6 +30,7 @@ export class MedsComponent implements OnInit {
   minRem:number;
   timeup:boolean;
   calculated:boolean = false;
+  medsFetched:boolean = false;
 
   constructor(private medService: MedService) { }
 
@@ -48,7 +49,10 @@ export class MedsComponent implements OnInit {
     this.minsArr = ['00', 15, 30, 45];
     
     this.medService.getMeds().subscribe(meds => {
+      console.log('123');
       this.meds = meds;
+      console.log(this.meds);
+      console.log('456');
     });
 
     this.currentTime = new Date();
