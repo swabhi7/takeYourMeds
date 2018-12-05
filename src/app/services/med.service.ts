@@ -17,10 +17,8 @@ export class MedService {
 
     console.log('inside constr');
 
-    this.http.get<{message: string, meds: Med[]}>('http://localhost:3000/api/meds').subscribe((medsData) => {
+    this.getMeds().then(medsData => {
       this.meds = medsData.meds;
-      this.fetchComplete = true;
-      console.log('inside http get - done');
     });
 
     console.log('after');
@@ -79,12 +77,12 @@ export class MedService {
     
   }
 
-  getMeds(): Observable<Med[]>{
+  getMeds(): Promise<any>{
     console.log('inside getMeds()');
 
-    while(this.fetchComplete != true){}
+    return this.http.get('http://localhost:3000/api/meds').toPromise();
 
-    return of(this.meds);
+    //return of(this.meds);
 
   }
 
@@ -100,7 +98,14 @@ export class MedService {
   }
 
   addMed(med:Med){
-    this.meds.unshift(med);
+    console.log('hi1');
+    this.http.post<{message:string, med:Med}>('http://localhost:3000/api/meds', med).subscribe(medData => {
+      console.log('med added');
+      this.meds.unshift(med);
+      console.log('2');
+    });
+    console.log('3');
+    
   }
 
   editMed(med:Med){

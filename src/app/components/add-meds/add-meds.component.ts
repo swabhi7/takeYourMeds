@@ -30,9 +30,9 @@ export class AddMedsComponent implements OnInit {
 
     this.minsArr = [0, 15, 30, 45];
     
-    this.medService.getMeds().subscribe(meds => {
+    /*this.medService.getMeds().subscribe(meds => {
       this.meds = meds;
-    });
+    });*/
     
   }
 

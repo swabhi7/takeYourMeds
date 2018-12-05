@@ -32,6 +32,7 @@ export class MedsComponent implements OnInit {
   calculated:boolean = false;
   medsFetched:boolean = false;
 
+
   constructor(private medService: MedService) { }
 
   ngOnInit() {
@@ -48,33 +49,36 @@ export class MedsComponent implements OnInit {
 
     this.minsArr = ['00', 15, 30, 45];
     
-    this.medService.getMeds().subscribe(meds => {
+    this.medService.getMeds().then(medsData => {
       console.log('123');
-      this.meds = meds;
+      this.meds = medsData.meds;
+      this.medsFetched = true;
       console.log(this.meds);
       console.log('456');
+
+      this.currentTime = new Date();
+      this.currentHour = this.currentTime.getHours();
+      this.currentMin = this.currentTime.getMinutes();
+
+      for(let med of this.meds){
+        for(let time of med.toBeTakenAt){
+          //console.log(this.calTimeRem(time));
+          this.calTimeRem(time);
+          //time.taken = false;
+          console.log(time);
+          //time.hourRem = 10;
+          
+          console.log('Timeup - '+ time.timeup);
+        }
+      }
+
+      console.log(this.meds);
+
+      this.calculated = true;
+      console.log(this.calculated);
     });
 
-    this.currentTime = new Date();
-    this.currentHour = this.currentTime.getHours();
-    this.currentMin = this.currentTime.getMinutes();
-
-    for(let med of this.meds){
-      for(let time of med.toBeTakenAt){
-        //console.log(this.calTimeRem(time));
-        this.calTimeRem(time);
-        //time.taken = false;
-        console.log(time);
-        //time.hourRem = 10;
-        
-        console.log('Timeup - '+ time.timeup);
-      }
-    }
-
-    console.log(this.meds);
-
-    this.calculated = true;
-    console.log(this.calculated);
+    
     
   }
 

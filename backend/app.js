@@ -1,15 +1,30 @@
 const express = require('express');
-
+const bodyParser = require('body-parser');
+const Med = require('./models/med');
+const mongoose = require('mongoose');
+//qoITVu8Kxkajx4wJ
 const app = express();
 
+mongoose.connect('mongodb+srv://swabhi:qoITVu8Kxkajx4wJ@cluster0-mrfpl.mongodb.net/tymdb?retryWrites=true')
+.then(() => {
+    console.log('Connected to DB');
+})
+.catch(() => {
+    console.log('Connection to DB failed');
+});
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:false}));
+
 app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Controll-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.setHeader("Access-Controll-Allow-Methods", "GET, POST, PATCH, DELETE, PUT, OPTIONS");
+    res.setHeader("Access-Control-Allow-Origin", "*", "always");
+    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, PUT, OPTIONS");
     next();
 });
 
-app.use('/api/meds', (req, res, next) => {
+app.get('/api/meds', (req, res, next) => {
+    /*
     let meds = [
         {
             id: 'fdafadds',
@@ -46,9 +61,24 @@ app.use('/api/meds', (req, res, next) => {
             myReview: 'Works FSFS great!'
         }
     ];
-    res.status(200).json({
-        message: 'Meds fetched!',
-        meds: meds
+    */
+    Med.find()
+    .then((docs) => {
+        res.status(200).json({
+            message: 'Meds fetched!',
+            meds: docs
+        });
+    })
+    
+});
+
+app.post('/api/meds', (req, res, next) => {
+    let med = new Med(req.body);
+    console.log(med);
+    med.save();
+    res.status(201).json({
+        message:'med added successfully',
+        med:med
     });
 });
 

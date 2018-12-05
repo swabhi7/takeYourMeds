@@ -14,8 +14,8 @@ export class MyMedsDetailsComponent implements OnInit {
   constructor(private medService: MedService) { }
 
   ngOnInit() {
-    this.medService.getMeds().subscribe(meds => {
-      this.meds = meds;
+    this.medService.getMeds().then(medsData => {
+      this.meds = medsData.meds;
     });
   }
 
