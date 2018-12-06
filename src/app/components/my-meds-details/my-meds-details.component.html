@@ -7,9 +7,9 @@
     
         <strong><kbd>{{med.name}}</kbd></strong> &nbsp;
         <div class="pull-right">
-            <a routerLink="/meds/edit/{{med.id}}" class="btn btn-sm btn-dark"><i class="fa fa-pencil fa-light" aria-hidden="true"></i></a>
+            <a routerLink="/meds/edit/{{med._id}}" class="btn btn-sm btn-dark"><i class="fa fa-pencil fa-light" aria-hidden="true"></i></a>
             &nbsp; 
-            <a routerLink="/meds/details" (click)="deleteClicked(med.id)" class="btn btn-sm btn-dark"><i class="fa fa-remove fa-light" aria-hidden="true"></i></a>
+            <a routerLink="/meds/details" (click)="deleteClicked(med._id)" class="btn btn-sm btn-dark"><i class="fa fa-remove fa-light" aria-hidden="true"></i></a>
         </div>
         
 

@@ -12,7 +12,7 @@ export class MedsComponent implements OnInit {
   @ViewChild('medForm') form: any;
 
   med: Med = {
-    id: '',
+    _id: null,
     name: '',
     purpose: '',
     composition: '',
@@ -49,7 +49,7 @@ export class MedsComponent implements OnInit {
 
     this.minsArr = ['00', 15, 30, 45];
     
-    this.medService.getMeds().then(medsData => {
+    this.medService.getMeds().subscribe(medsData => {
       console.log('123');
       this.meds = medsData.meds;
       this.medsFetched = true;

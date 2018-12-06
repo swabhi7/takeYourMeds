@@ -12,7 +12,7 @@ import {Location} from '@angular/common';
 export class EditMedComponent implements OnInit {
 
   med: Med = {
-    id: '',
+    _id: null,
     name: '',
     purpose: '',
     composition: '',
@@ -75,7 +75,7 @@ export class EditMedComponent implements OnInit {
     //medForm.value.toBeTakenAt.mm = 15;
     //this.meds.unshift(medForm.value);
     medForm.value.toBeTakenAt = this.med.toBeTakenAt;
-    medForm.value.id = this.id1;
+    medForm.value._id = this.id1;
     for(let time of medForm.value.toBeTakenAt){
       time.taken = false;
     }

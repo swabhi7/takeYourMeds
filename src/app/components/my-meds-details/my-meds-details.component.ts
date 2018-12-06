@@ -14,12 +14,21 @@ export class MyMedsDetailsComponent implements OnInit {
   constructor(private medService: MedService) { }
 
   ngOnInit() {
-    this.medService.getMeds().then(medsData => {
+    this.medService.getMeds().subscribe(medsData => {
       this.meds = medsData.meds;
     });
   }
 
-  deleteClicked(id:string){
+  deleteClicked(id:any){
+    //update local meds array after deleting
+    let index:number;
+    for(let med1 of this.meds){
+      if(med1._id == id){
+        index = this.meds.indexOf(med1);
+      }
+    }
+    this.meds.splice(index, 1);
+    //making the call to service to delete
     this.medService.deleteMed(id);
   }
 

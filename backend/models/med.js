@@ -11,7 +11,8 @@ const medSchema = mongoose.Schema({
         timeup: Boolean,
         hourRem: Number,
         minRem: Number,
-        taken: Boolean
+        taken: Boolean,
+        msgSent: Boolean
     }],
     myReview: String
 });

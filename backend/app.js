@@ -82,6 +82,12 @@ app.post('/api/meds', (req, res, next) => {
     });
 });
 
+app.delete('/api/meds/:id', (req, res, next) => {
+    Med.deleteOne({_id: req.params.id}).then(result => {
+        res.status(200).json({message:'successfully deleted'});
+    });
+});
+
 module.exports = app;
 
 

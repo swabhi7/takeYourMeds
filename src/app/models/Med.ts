@@ -1,5 +1,5 @@
 export interface Med {
-    id: string,
+    _id: any,
     name: string,
     purpose?: string,
     composition?: string,
@@ -10,7 +10,8 @@ export interface Med {
         timeup?: boolean,
         hourRem?: number,
         minRem?: number,
-        taken?: boolean
+        taken?: boolean,
+        msgSent?:boolean
     }[],
     myReview?: string
 }
