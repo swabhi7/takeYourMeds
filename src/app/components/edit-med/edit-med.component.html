@@ -31,7 +31,7 @@
       <input type="text" class="form-control" name="dose" [(ngModel)]="dose">
       <button class="btn btn-primary" type="button" [disabled]="!dose" (click)="doseAdded($event)">Add times of Doses</button>
     </div>
-    <div class="form-group">
+    <div *ngIf="doseAddedVar" class="form-group">
       <label>When to take (Time)</label>
       <div *ngFor="let time of med.toBeTakenAt" class="container">
           <div class="row">

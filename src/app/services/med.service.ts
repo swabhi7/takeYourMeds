@@ -22,14 +22,8 @@ export class MedService {
     return this.http.get('http://localhost:3000/api/meds');
   }
 
-  getMed(id:any): Observable<Med>{
-    for(let med of this.meds){
-      //console.log('inside for - id - ' + med.id);
-      if(med._id == id){
-        console.log('inside if');
-        return of(med);
-      }
-    }
+  getMed(id:any): Observable<any>{
+    return this.http.get('http://localhost:3000/api/meds/' + id);
   }
 
   addMed(med:Med){
@@ -39,6 +33,10 @@ export class MedService {
   }
 
   editMed(med:Med){
+
+    this.http.put('http://localhost:3000/api/meds/' + med._id, med).subscribe(result => {
+      console.log('result of update - ' + result);
+    });
     
     let index:number;
     for(let med1 of this.meds){

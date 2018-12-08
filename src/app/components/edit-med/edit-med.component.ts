@@ -19,68 +19,53 @@ export class EditMedComponent implements OnInit {
     toBeTakenAt: [],
     myReview: ''
   };
-
   fetchedMed:boolean = false;
-  
   hoursArr: any[] = [];
   minsArr: any[] = [];
   dose: number;
   id1: string = '';
+  doseAddedVar: boolean = false;
 
   constructor(private medService: MedService, private route: ActivatedRoute, private location: Location) { }
 
   ngOnInit() {
-
     this.hoursArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-
     this.minsArr = [0, 15, 30, 45];
-
-    //let id = +this.route.snapshot.paramMap.get('id');
     let id;
     this.route.params.subscribe(params => {
       id = params.id;
-      console.log(params);
     });
-    console.log('id is - ' + id);
     this.id1 = id.toString();
-    console.log('id1 is - ' + this.id1);
-
     this.medService.getMed(this.id1).subscribe(med => {
-      console.log(med.name);
-      this.med = med;
+      this.med = med.med;
       this.fetchedMed = true;
     });
-
   }
-
-  
 
   doseAdded(e){
     e.preventDefault();
     this.med.toBeTakenAt = [];
     for(let i = 0; i < this.dose; i++){
       this.med.toBeTakenAt.push({
-        hh:3,
+        hh:9,
         mm:15,
         amorpm:'am',
-        taken: false
       });
     }
+    this.doseAddedVar = true;
   }
 
   onSubmit(medForm: any){
-    //console.log(medForm.value);
-    //console.log(medForm.valid);
-    //medForm.value.toBeTakenAt.hh = 10;
-    //medForm.value.toBeTakenAt.mm = 15;
-    //this.meds.unshift(medForm.value);
     medForm.value.toBeTakenAt = this.med.toBeTakenAt;
     medForm.value._id = this.id1;
     for(let time of medForm.value.toBeTakenAt){
       time.taken = false;
+      time.msgSent = false;
+      time.timeup = null;
+      time.hourRem = null;
+      time.minRem = null;
     }
     this.medService.editMed(medForm.value);
-    console.log(medForm.value);
   }
 
   

@@ -24,44 +24,6 @@ app.use((req, res, next) => {
 });
 
 app.get('/api/meds', (req, res, next) => {
-    /*
-    let meds = [
-        {
-            id: 'fdafadds',
-            name: 'Medicine 110',
-            purpose: 'Keeps Blood Pressure in controllfadada',
-            composition: 'paracetamoldfs, nice',
-            toBeTakenAt: [{
-              hh: 9,
-              mm: 0,
-              amorpm: 'am',
-              taken: false
-            }],
-            myReview: 'Works FSFS great!'
-        },
-        {
-            id: 'NFDKSJDK',
-            name: 'blue 110',
-            purpose: 'dewkjn dnlwdnel Pressure in controllfadada',
-            composition: 'nice',
-            toBeTakenAt: [
-                {
-                    hh: 11,
-                    mm: 45,
-                    amorpm: 'am',
-                    taken: false
-                },
-                {
-                    hh: 7,
-                    mm: 15,
-                    amorpm: 'pm',
-                    taken: false
-                }
-            ],
-            myReview: 'Works FSFS great!'
-        }
-    ];
-    */
     Med.find()
     .then((docs) => {
         res.status(200).json({
@@ -72,6 +34,15 @@ app.get('/api/meds', (req, res, next) => {
     
 });
 
+app.get('/api/meds/:id', (req, res, next) => {
+    Med.findOne({_id:req.params.id}).then(doc => {
+        res.status(200).json({
+            message: 'Med fetched',
+            med: doc
+        });
+    });
+});
+
 app.post('/api/meds', (req, res, next) => {
     let med = new Med(req.body);
     console.log(med);
@@ -79,6 +50,24 @@ app.post('/api/meds', (req, res, next) => {
     res.status(201).json({
         message:'med added successfully',
         med:med
+    });
+});
+
+app.put('/api/meds/:id', (req, res, next) => {
+    const updatedMed = new Med({
+        _id: req.body._id,
+        name: req.body.name,
+        purpose: req.body.purpose,
+        composition: req.body.composition,
+        toBeTakenAt: req.body.toBeTakenAt,
+        myReview: req.body.myReview
+        
+    });
+    Med.updateOne({_id: req.params.id}, updatedMed).then(result => {
+        res.status(200).json({
+            message: 'Update successful',
+            data: result
+        });
     });
 });
 
