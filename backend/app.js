@@ -2,6 +2,19 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const Med = require('./models/med');
 const mongoose = require('mongoose');
+
+var nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'dashswabhimaan@gmail.com',
+    pass: '?wolfpack...'
+  }
+});
+
+
+
 //qoITVu8Kxkajx4wJ
 const app = express();
 
@@ -22,6 +35,72 @@ app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, PUT, OPTIONS");
     next();
 });
+
+function calTimeRem(time){
+
+    let currentTime = new Date();
+    let currentHour = currentTime.getHours();
+    let currentMin = currentTime.getMinutes();
+    
+    let totalMin, totalCurrentMin = currentHour * 60 + currentMin;
+    if(time.amorpm == 'am'){
+      if(time.hh == 12){
+        totalMin = time.mm;
+      }
+      else{
+        totalMin = time.hh * 60 + time.mm;
+      } 
+    }
+    if(time.amorpm == 'pm'){
+      if(time.hh == 12){
+        totalMin = 12*60 + time.mm;
+      }
+      else{
+        totalMin = ((time.hh + 12) * 60) + (time.mm);
+      }     
+    }
+    if(totalMin - totalCurrentMin <= 0){
+      time.timeup = true;
+    }
+    else{
+      time.timeup = false;
+      let minRem = totalMin - totalCurrentMin;
+      time.hourRem = Math.floor(minRem / 60);
+      time.minRem = minRem % 60;
+    }
+    return time;
+}
+
+function calEverythingAndRemindIfNeeded(){
+    //console.log('-------------------------------------------------------------');
+    Med.find().then((docs) => {
+        for(let doc of docs){
+            for(let dose of doc.toBeTakenAt){
+                dose = calTimeRem(dose);
+                //console.log(dose);
+                if(dose.timeup){
+                    var mailOptions = {
+                        from: 'dashswabhimaan@gmail.com',
+                        to: 'sudhosil@gmail.com',
+                        subject: 'TYM Reminder',
+                        text: 'You have not taken your med - ' + doc.name + ' scheduled at - ' + dose.hh + '-' + dose.mm + ' ' + dose.amorpm
+                    };
+                        
+                    transporter.sendMail(mailOptions, function(error, info){
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log('Email sent: ' + info.response);
+                    }
+                    });
+                }
+            }
+            doc.save();
+        }
+    });
+}
+
+setInterval(calEverythingAndRemindIfNeeded, 30000);
 
 app.get('/api/meds', (req, res, next) => {
     Med.find()
