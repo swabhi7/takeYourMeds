@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const Med = require('./models/med');
 const mongoose = require('mongoose');
-
+var schedule = require('node-schedule');
 var nodemailer = require('nodemailer');
 
 var transporter = nodemailer.createTransport({
@@ -34,6 +34,18 @@ app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, PUT, OPTIONS");
     next();
+});
+
+schedule.scheduleJob('0 0 * * *', () => {
+    Med.find().then(docs => {
+        for(let doc of docs){
+            for(let dose of doc.toBeTakenAt){
+                dose.taken = false;
+                dose.msgSent = false;
+            }
+            doc.save();
+        }
+    });
 });
 
 function calTimeRem(time){
@@ -76,23 +88,28 @@ function calEverythingAndRemindIfNeeded(){
     Med.find().then((docs) => {
         for(let doc of docs){
             for(let dose of doc.toBeTakenAt){
-                dose = calTimeRem(dose);
-                //console.log(dose);
-                if(dose.timeup){
-                    var mailOptions = {
-                        from: 'dashswabhimaan@gmail.com',
-                        to: 'sudhosil@gmail.com',
-                        subject: 'TYM Reminder',
-                        text: 'You have not taken your med - ' + doc.name + ' scheduled at - ' + dose.hh + '-' + dose.mm + ' ' + dose.amorpm
-                    };
-                        
-                    transporter.sendMail(mailOptions, function(error, info){
-                    if (error) {
-                        console.log(error);
-                    } else {
-                        console.log('Email sent: ' + info.response);
+                if(dose.taken == false){
+                    dose = calTimeRem(dose);
+                    //console.log(dose);
+                    if(dose.timeup){
+                        if(dose.msgSent == false){
+                            var mailOptions = {
+                                from: 'dashswabhimaan@gmail.com',
+                                to: 'sudhosil@gmail.com',
+                                subject: 'TYM Reminder',
+                                text: 'You have not taken your med - ' + doc.name + ' scheduled at - ' + dose.hh + '-' + dose.mm + ' ' + dose.amorpm
+                            };
+                                
+                            transporter.sendMail(mailOptions, function(error, info){
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                console.log('Email sent: ' + info.response);
+                            }
+                            });
+                            dose.msgSent = true;
+                        }
                     }
-                    });
                 }
             }
             doc.save();
@@ -100,7 +117,7 @@ function calEverythingAndRemindIfNeeded(){
     });
 }
 
-setInterval(calEverythingAndRemindIfNeeded, 30000);
+setInterval(calEverythingAndRemindIfNeeded, 300000);
 
 app.get('/api/meds', (req, res, next) => {
     Med.find()
