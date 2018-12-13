@@ -2,7 +2,7 @@
 
 <hr>
 
-<div *ngIf="meds?.length > 0 && calculated">
+<div *ngIf="meds?.length > 0 && medsFetched == true">
 
   <div *ngFor="let med of meds" class="card mb-3">
     <div class="card-header">{{med.name}}</div>
@@ -34,6 +34,6 @@
   <h3 class="lead">Loading your Meds Schedule</h3>
 </div>
 
-<h3 *ngIf="meds?.length == 0">
+<h3 *ngIf="meds?.length == 0 && medsFetched == true">
   You have not added any of your medicines yet! Please add.
 </h3>

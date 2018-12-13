@@ -117,6 +117,8 @@ function calEverythingAndRemindIfNeeded(){
     });
 }
 
+calEverythingAndRemindIfNeeded();
+
 setInterval(calEverythingAndRemindIfNeeded, 300000);
 
 app.get('/api/meds', (req, res, next) => {
@@ -143,6 +145,7 @@ app.post('/api/meds', (req, res, next) => {
     let med = new Med(req.body);
     console.log(med);
     med.save();
+    calEverythingAndRemindIfNeeded();
     res.status(201).json({
         message:'med added successfully',
         med:med
@@ -160,6 +163,7 @@ app.put('/api/meds/:id', (req, res, next) => {
         
     });
     Med.updateOne({_id: req.params.id}, updatedMed).then(result => {
+        calEverythingAndRemindIfNeeded();
         res.status(200).json({
             message: 'Update successful',
             data: result
