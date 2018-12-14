@@ -6,6 +6,8 @@ import {PageNotFoundComponent} from './components/page-not-found/page-not-found.
 import {MyMedsDetailsComponent} from './components/my-meds-details/my-meds-details.component';
 import {AddMedsComponent} from './components/add-meds/add-meds.component';
 import {EditMedComponent} from './components/edit-med/edit-med.component';
+import { LoginComponent } from './components/auth/login/login.component';
+import { SignupComponent } from './components/auth/signup/signup.component';
 
 const routes: Routes = [
   {path: '', component: MedsComponent},
@@ -13,6 +15,8 @@ const routes: Routes = [
   {path: 'meds/details', component: MyMedsDetailsComponent},
   {path: 'meds/add', component: AddMedsComponent},
   {path: 'meds/edit/:id', component: EditMedComponent},
+  {path: 'login', component: LoginComponent},
+  {path: 'signup', component: SignupComponent},
   {path: '**', component: PageNotFoundComponent}
 ];
 

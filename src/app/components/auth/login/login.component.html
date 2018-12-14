@@ -1,0 +1,28 @@
+<div class="card">
+<div class="card-body">
+
+
+
+<form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+  <div class="form-group">
+    <label>Email</label>
+    <input type="email" class="form-control" name="email" [(ngModel)]="authDataEntered.email"
+      #emailip="ngModel"
+      required
+      [ngClass]="{'is-invalid': emailip.errors && emailip.touched}"
+    >
+    <div [hidden]="!emailip.errors?.required" class="invalid-feedback">Email is required</div>
+  </div>
+  <div class="form-group">
+    <label>Password</label>
+    <input type="password" class="form-control" name="password" [(ngModel)]="authDataEntered.password">
+  </div>
+  
+  <button [disabled]="!loginForm.valid" type="submit" class="btn btn-block btn-primary mb-3">Login</button>
+</form>
+
+
+
+
+</div>
+</div>
