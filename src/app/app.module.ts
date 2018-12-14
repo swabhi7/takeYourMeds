@@ -16,6 +16,7 @@ import { EditMedComponent } from './components/edit-med/edit-med.component';
 import {HttpClientModule} from '@angular/common/http';
 import { LoginComponent } from './components/auth/login/login.component';
 import { SignupComponent } from './components/auth/signup/signup.component';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { SignupComponent } from './components/auth/signup/signup.component';
     HttpClientModule
   ],
   providers: [
-    MedService
+    MedService,
+    AuthService
   ],
   bootstrap: [AppComponent]
 })

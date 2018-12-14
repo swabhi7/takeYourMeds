@@ -1,7 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const Med = require('./models/med');
+const User = require('./models/user');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 var schedule = require('node-schedule');
 var nodemailer = require('nodemailer');
 
@@ -175,6 +177,39 @@ app.delete('/api/meds/:id', (req, res, next) => {
     Med.deleteOne({_id: req.params.id}).then(result => {
         res.status(200).json({message:'successfully deleted'});
     });
+});
+
+app.post('/api/users/signup', (req, res, next) => {
+    const user = new User({
+        email: req.body.email,
+        phone: req.body.phone,
+        name: req.body.name,
+        password: req.body.password
+    });
+    user.save();
+    res.status(201).json({
+        message: 'New User Created',
+    });
+    /*
+    bcrypt.hash(req.body.password, 10).then(hash => {
+        const user = new User({
+            email: req.body.email,
+            phone: req.body.phone,
+            name: req.body.name,
+            password: hash
+        });
+        user.save().then(result => {
+            res.status(201).json({
+                message: 'New User Created',
+                result: result
+            });
+        }).error(err => {
+            res.status(500).json({
+                error: err
+            });
+        });
+    });
+    */
 });
 
 module.exports = app;
