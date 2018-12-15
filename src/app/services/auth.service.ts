@@ -14,4 +14,10 @@ export class AuthService {
       console.log(result);
     });
   }
+
+  loginUser(authData: AuthData){
+    this.http.post('http://localhost:3000/api/users/login', authData).subscribe(result => {
+      console.log(result);
+    });
+  }
 }

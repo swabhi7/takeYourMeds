@@ -4,6 +4,7 @@ const Med = require('./models/med');
 const User = require('./models/user');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 var schedule = require('node-schedule');
 var nodemailer = require('nodemailer');
 
@@ -180,6 +181,7 @@ app.delete('/api/meds/:id', (req, res, next) => {
 });
 
 app.post('/api/users/signup', (req, res, next) => {
+    
     const user = new User({
         email: req.body.email,
         phone: req.body.phone,
@@ -190,26 +192,36 @@ app.post('/api/users/signup', (req, res, next) => {
     res.status(201).json({
         message: 'New User Created',
     });
+    
+
     /*
-    bcrypt.hash(req.body.password, 10).then(hash => {
-        const user = new User({
-            email: req.body.email,
-            phone: req.body.phone,
-            name: req.body.name,
-            password: hash
-        });
-        user.save().then(result => {
-            res.status(201).json({
-                message: 'New User Created',
-                result: result
-            });
-        }).error(err => {
-            res.status(500).json({
-                error: err
-            });
+    const hashedPassword = bcrypt.hash(req.body.password, 10);
+    const user = new User({
+        email: req.body.email,
+        phone: req.body.phone,
+        name: req.body.name,
+        password: hashedPassword
+    });
+    user.save();
+    res.status(201).json({
+        message: 'New User Created',
+    });*/
+});
+
+app.post('/api/users/login', (req, res, next) => {
+    User.findOne({email: req.body.email}).then(user => {
+        if(!user){
+            return res.status(401).json({message: 'User not found'});
+        }
+        if(user.password != req.body.password){
+            return res.status(401).json({message: 'Incorrect password'});
+        }
+        const token = jwt.sign({email: user.email, userId: user._id}, 'secret_this_should_be_longer', {expiresIn: '1h'});
+        res.status(200).json({
+            message: 'Login token generated',
+            token: token
         });
     });
-    */
 });
 
 module.exports = app;
