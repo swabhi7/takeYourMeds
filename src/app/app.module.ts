@@ -13,10 +13,11 @@ import { MyMedsDetailsComponent } from './components/my-meds-details/my-meds-det
 import { AddMedsComponent } from './components/add-meds/add-meds.component';
 import { EditMedComponent } from './components/edit-med/edit-med.component';
 
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { LoginComponent } from './components/auth/login/login.component';
 import { SignupComponent } from './components/auth/signup/signup.component';
 import { AuthService } from './services/auth.service';
+import { AuthInterceptor } from './services/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { AuthService } from './services/auth.service';
     HttpClientModule
   ],
   providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
     MedService,
     AuthService
   ],

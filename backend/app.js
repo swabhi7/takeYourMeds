@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 var schedule = require('node-schedule');
 var nodemailer = require('nodemailer');
+const checkAuth = require('./check-auth');
 
 var transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -34,7 +35,7 @@ app.use(bodyParser.urlencoded({extended:false}));
 
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*", "always");
-    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, PUT, OPTIONS");
     next();
 });
@@ -124,7 +125,7 @@ calEverythingAndRemindIfNeeded();
 
 setInterval(calEverythingAndRemindIfNeeded, 300000);
 
-app.get('/api/meds', (req, res, next) => {
+app.get('/api/meds', checkAuth, (req, res, next) => {
     Med.find()
     .then((docs) => {
         res.status(200).json({
@@ -135,7 +136,7 @@ app.get('/api/meds', (req, res, next) => {
     
 });
 
-app.get('/api/meds/:id', (req, res, next) => {
+app.get('/api/meds/:id', checkAuth, (req, res, next) => {
     Med.findOne({_id:req.params.id}).then(doc => {
         res.status(200).json({
             message: 'Med fetched',
@@ -144,7 +145,7 @@ app.get('/api/meds/:id', (req, res, next) => {
     });
 });
 
-app.post('/api/meds', (req, res, next) => {
+app.post('/api/meds', checkAuth, (req, res, next) => {
     let med = new Med(req.body);
     console.log(med);
     med.save();
@@ -155,7 +156,7 @@ app.post('/api/meds', (req, res, next) => {
     });
 });
 
-app.put('/api/meds/:id', (req, res, next) => {
+app.put('/api/meds/:id', checkAuth, (req, res, next) => {
     const updatedMed = new Med({
         _id: req.body._id,
         name: req.body.name,
@@ -174,7 +175,7 @@ app.put('/api/meds/:id', (req, res, next) => {
     });
 });
 
-app.delete('/api/meds/:id', (req, res, next) => {
+app.delete('/api/meds/:id', checkAuth, (req, res, next) => {
     Med.deleteOne({_id: req.params.id}).then(result => {
         res.status(200).json({message:'successfully deleted'});
     });
