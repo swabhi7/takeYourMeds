@@ -30,7 +30,7 @@ export class MedsComponent implements OnInit {
 
   takenClicked(time:any, med: Med){
     time.taken = true;
-    this.medService.editMed(med);
+    this.medService.editMed(med, true);
   }
 
 }

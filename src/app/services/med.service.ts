@@ -4,6 +4,7 @@ import {of} from 'rxjs';
 import {Med} from '../models/Med';
 
 import {HttpClient} from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class MedService {
 
   meds:Med[] = [];
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient, private router: Router) { 
     this.getMeds().subscribe(medsData => {
       this.meds = medsData.meds;
     });
@@ -29,10 +30,11 @@ export class MedService {
   addMed(med:Med){
     this.http.post<{message:string, med:Med}>('http://localhost:3000/api/meds', med).subscribe(medData => {
       this.meds.unshift(medData.med);
+      this.router.navigate(['/']);
     });
   }
 
-  editMed(med:Med){
+  editMed(med:Med, isOnlyTakenEdited: boolean){
 
     this.http.put('http://localhost:3000/api/meds/' + med._id, med).subscribe(result => {
       console.log('result of update - ' + result);
@@ -47,6 +49,10 @@ export class MedService {
     this.meds.splice(index, 1);
 
     this.meds.unshift(med);
+
+    if(!isOnlyTakenEdited){
+      this.router.navigate(['/meds/details']);
+    }
 
   }
 

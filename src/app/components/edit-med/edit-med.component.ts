@@ -65,7 +65,7 @@ export class EditMedComponent implements OnInit {
       time.hourRem = null;
       time.minRem = null;
     }
-    this.medService.editMed(medForm.value);
+    this.medService.editMed(medForm.value, false);
   }
 
   
