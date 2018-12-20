@@ -8,13 +8,14 @@ import {AddMedsComponent} from './components/add-meds/add-meds.component';
 import {EditMedComponent} from './components/edit-med/edit-med.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { SignupComponent } from './components/auth/signup/signup.component';
+import { AuthGuard } from './services/auth.guard';
 
 const routes: Routes = [
-  {path: '', component: MedsComponent},
-  {path: 'profile', component: MyProfileComponent},
-  {path: 'meds/details', component: MyMedsDetailsComponent},
-  {path: 'meds/add', component: AddMedsComponent},
-  {path: 'meds/edit/:id', component: EditMedComponent},
+  {path: '', component: MedsComponent, canActivate: [AuthGuard]},
+  {path: 'profile', component: MyProfileComponent, canActivate: [AuthGuard]},
+  {path: 'meds/details', component: MyMedsDetailsComponent, canActivate: [AuthGuard]},
+  {path: 'meds/add', component: AddMedsComponent, canActivate: [AuthGuard]},
+  {path: 'meds/edit/:id', component: EditMedComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
   {path: '**', component: PageNotFoundComponent}
@@ -26,6 +27,9 @@ const routes: Routes = [
   ],
   imports: [
     RouterModule.forRoot(routes)
+  ],
+  providers: [
+    AuthGuard
   ]
 })
 export class AppRoutingModule { }
