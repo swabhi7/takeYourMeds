@@ -34,21 +34,14 @@ export class AuthService {
   }
 
   loginUser(authData: AuthData){
-    console.log('hi');
     this.http.post<{message: string, token: string}>('http://localhost:3000/api/users/login', authData).subscribe(result => {
-      console.log('hi1');
       this.token = result.token;
-      console.log('hi2');
       if(this.token){
-        console.log('1');
         this.authStatus.next(true);
-        console.log('2');
         this.authStatusNormalVar = true;
-        console.log('3');
+        this.saveAuthDataInLocalStorage(this.token);
         this.router.navigate(['/']);
-        console.log('4');
       }
-      console.log('hi3');
     });
   }
 
@@ -56,7 +49,25 @@ export class AuthService {
     this.token = null;
     this.authStatus.next(false);
     this.authStatusNormalVar = false;
+    this.clearAuthDataInLocalStorage();
     this.router.navigate(['/login']);
+  }
+
+  saveAuthDataInLocalStorage(token: string){
+    localStorage.setItem('token', token);
+  }
+
+  clearAuthDataInLocalStorage(){
+    localStorage.removeItem('token');
+  }
+
+  autoAuthIfDataInLocalStorage(){
+    console.log('autoauth called');
+    if(localStorage.getItem('token')){
+      this.token = localStorage.getItem('token');
+      this.authStatus.next(true);
+      this.authStatusNormalVar = true;
+    }
   }
 
 }
