@@ -5,6 +5,7 @@ import {Med} from '../models/Med';
 
 import {HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,8 @@ export class MedService {
 
   meds:Med[] = [];
 
+  backendUrl = environment.apiUrl + '/meds/';
+
   constructor(private http: HttpClient, private router: Router) { 
     this.getMeds().subscribe(medsData => {
       this.meds = medsData.meds;
@@ -20,15 +23,15 @@ export class MedService {
   }
 
   getMeds(): Observable<any>{
-    return this.http.get('http://localhost:3000/api/meds');
+    return this.http.get(this.backendUrl);
   }
 
   getMed(id:any): Observable<any>{
-    return this.http.get('http://localhost:3000/api/meds/' + id);
+    return this.http.get(this.backendUrl + id);
   }
 
   addMed(med:Med){
-    this.http.post<{message:string, med:Med}>('http://localhost:3000/api/meds', med).subscribe(medData => {
+    this.http.post<{message:string, med:Med}>(this.backendUrl, med).subscribe(medData => {
       this.meds.unshift(medData.med);
       this.router.navigate(['/']);
     });
@@ -36,29 +39,30 @@ export class MedService {
 
   editMed(med:Med, isOnlyTakenEdited: boolean){
 
-    this.http.put('http://localhost:3000/api/meds/' + med._id, med).subscribe(result => {
+    this.http.put(this.backendUrl + med._id, med).subscribe(result => {
       console.log('result of update - ' + result);
+      let index:number;
+      for(let med1 of this.meds){
+        if(med1._id == med._id){
+          index = this.meds.indexOf(med1);
+        }
+      }
+      this.meds.splice(index, 1);
+
+      this.meds.unshift(med);
+
+      if(!isOnlyTakenEdited){
+        this.router.navigate(['/meds/details']);
+      }
     });
     
-    let index:number;
-    for(let med1 of this.meds){
-      if(med1._id == med._id){
-        index = this.meds.indexOf(med1);
-      }
-    }
-    this.meds.splice(index, 1);
-
-    this.meds.unshift(med);
-
-    if(!isOnlyTakenEdited){
-      this.router.navigate(['/meds/details']);
-    }
+    
 
   }
 
   deleteMed(id:any){
     //making the call to delete from server
-    this.http.delete('http://localhost:3000/api/meds/' + id).subscribe(result => {
+    this.http.delete(this.backendUrl + id).subscribe(result => {
       console.log(result);
 
       //deleting from local meds array

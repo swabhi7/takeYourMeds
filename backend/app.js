@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const Med = require('./models/med');
 const User = require('./models/user');
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 var schedule = require('node-schedule');
 var nodemailer = require('nodemailer');
@@ -126,8 +125,10 @@ calEverythingAndRemindIfNeeded();
 setInterval(calEverythingAndRemindIfNeeded, 300000);
 
 app.get('/api/meds', checkAuth, (req, res, next) => {
-    Med.find()
+    
+    Med.find({creator: req.userData.userId})
     .then((docs) => {
+        calEverythingAndRemindIfNeeded();
         res.status(200).json({
             message: 'Meds fetched!',
             meds: docs
@@ -135,6 +136,8 @@ app.get('/api/meds', checkAuth, (req, res, next) => {
     })
     
 });
+
+
 
 app.get('/api/meds/:id', checkAuth, (req, res, next) => {
     Med.findOne({_id:req.params.id}).then(doc => {
@@ -147,6 +150,7 @@ app.get('/api/meds/:id', checkAuth, (req, res, next) => {
 
 app.post('/api/meds', checkAuth, (req, res, next) => {
     let med = new Med(req.body);
+    med.creator = req.userData.userId;
     console.log(med);
     med.save();
     calEverythingAndRemindIfNeeded();

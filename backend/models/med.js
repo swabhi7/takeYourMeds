@@ -14,7 +14,11 @@ const medSchema = mongoose.Schema({
         taken: Boolean,
         msgSent: Boolean
     }],
-    myReview: String
+    myReview: String,
+    creator: {
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "User"
+    }
 });
 
 module.exports = mongoose.model('Med', medSchema);
