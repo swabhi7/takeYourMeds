@@ -1,4 +1,9 @@
 <div class="card">
+
+<div class="card-header bg-primary">
+  <h4 style="color:white"><strong><i class="fa fa-user-plus"></i>&nbsp;&nbsp;SignUp</strong></h4>
+</div>
+
 <div class="card-body">
 
 
@@ -9,28 +14,52 @@
     <input type="email" class="form-control" name="email" [(ngModel)]="newUser.email"
       #emailip="ngModel"
       required
+      pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
       [ngClass]="{'is-invalid': emailip.errors && emailip.touched}"
     >
     <div [hidden]="!emailip.errors?.required" class="invalid-feedback">Email is required</div>
+    <div [hidden]="!emailip.errors?.pattern" class="invalid-feedback">Invalid Email</div>
   </div>
   <div class="form-group">
     <label>Phone</label>
-    <input type="text" class="form-control" name="phone" [(ngModel)]="newUser.phone">
+    <input type="text" class="form-control" name="phone" [(ngModel)]="newUser.phone"
+      #phoneip="ngModel"
+      required
+      pattern="^[0-9]{1,10}$"
+      minlength="10"
+      maxlength="10"
+      [ngClass]="{'is-invalid': phoneip.errors && phoneip.touched}"
+    >
+    <div [hidden]="!phoneip.errors?.required" class="invalid-feedback">Phone is required</div>
+    <div [hidden]="!phoneip.errors?.pattern" class="invalid-feedback">Phone number should contain digits only</div>
+    <div [hidden]="!phoneip.errors?.minlength && !phoneip.errors?.maxlength" class="invalid-feedback">Phone number should be 10 digit long</div>
   </div>
   <div class="form-group">
     <label>Name</label>
-    <input type="text" class="form-control" name="name" [(ngModel)]="newUser.name">
+    <input type="text" class="form-control" name="name" [(ngModel)]="newUser.name"
+      #nameip="ngModel"
+      required
+      minlength="2"
+      maxlength="100"
+      [ngClass]="{'is-invalid': nameip.errors && nameip.touched}"
+    >
+    <div [hidden]="!nameip.errors?.required" class="invalid-feedback">Name is required</div>
+    <div [hidden]="!nameip.errors?.minlength" class="invalid-feedback">Name should be at least 2 character long</div>
+    <div [hidden]="!nameip.errors?.maxlength" class="invalid-feedback">Name is too long</div>
   </div>
   <div class="form-group">
     <label>Password</label>
-    <input type="password" class="form-control" name="password" [(ngModel)]="newUser.password">
-  </div>
-  <div class="form-group">
-    <label>Confirm Password</label>
-    <input type="password" class="form-control" name="cpassword">
+    <input type="password" class="form-control" name="password" [(ngModel)]="newUser.password"
+      #pwip="ngModel"
+      required
+      [ngClass]="{'is-invalid': pwip.errors && pwip.touched}"
+    >
+    <div [hidden]="!pwip.errors?.required" class="invalid-feedback">Password is required</div>
   </div>
   
   <button [disabled]="!signupForm.valid" type="submit" class="btn btn-block btn-primary mb-3">Sign Up</button>
+
+  <i class="fa fa-sign-in"></i>&nbsp;<a routerLink="/login">Already have an account? Login</a>
 </form>
 
 

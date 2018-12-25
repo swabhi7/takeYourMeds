@@ -8,6 +8,7 @@ var schedule = require('node-schedule');
 var nodemailer = require('nodemailer');
 const checkAuth = require('./check-auth');
 
+
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -98,7 +99,7 @@ function calEverythingAndRemindIfNeeded(){
                         if(dose.msgSent == false){
                             var mailOptions = {
                                 from: 'dashswabhimaan@gmail.com',
-                                to: 'sudhosil@gmail.com',
+                                to: 'dashswabhimaan@gmail.com',
                                 subject: 'TYM Reminder',
                                 text: 'You have not taken your med - ' + doc.name + ' scheduled at - ' + dose.hh + '-' + dose.mm + ' ' + dose.amorpm
                             };

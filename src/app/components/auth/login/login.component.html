@@ -1,4 +1,9 @@
 <div class="card">
+  
+  <div class="card-header bg-primary">
+    <h4 style="color:white"><strong><i class="fa fa-sign-in"></i>&nbsp;&nbsp;Login</strong></h4>
+  </div>
+
 <div class="card-body">
 
 
@@ -9,16 +14,26 @@
     <input type="email" class="form-control" name="email" [(ngModel)]="authDataEntered.email"
       #emailip="ngModel"
       required
+      pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
       [ngClass]="{'is-invalid': emailip.errors && emailip.touched}"
     >
     <div [hidden]="!emailip.errors?.required" class="invalid-feedback">Email is required</div>
+    <div [hidden]="!emailip.errors?.pattern" class="invalid-feedback">Invalid Email</div>
   </div>
   <div class="form-group">
     <label>Password</label>
-    <input type="password" class="form-control" name="password" [(ngModel)]="authDataEntered.password">
+    <input type="password" class="form-control" name="password" [(ngModel)]="authDataEntered.password"
+      #pwip="ngModel"
+      required
+      [ngClass]="{'is-invalid': pwip.errors && pwip.touched}"
+    >
+    <div [hidden]="!pwip.errors?.required" class="invalid-feedback">Password is required</div>
   </div>
   
   <button [disabled]="!loginForm.valid" type="submit" class="btn btn-block btn-primary mb-3">Login</button>
+
+  <i class="fa fa-user-plus"></i>&nbsp;<a routerLink="/signup">Dont have an account? SignUp</a>
+
 </form>
 
 
