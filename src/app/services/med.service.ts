@@ -6,6 +6,7 @@ import {Med} from '../models/Med';
 import {HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
 import {environment} from '../../environments/environment';
+import {FlashMessagesService} from 'angular2-flash-messages';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class MedService {
 
   backendUrl = environment.apiUrl + '/meds/';
 
-  constructor(private http: HttpClient, private router: Router) { 
+  constructor(private http: HttpClient, private router: Router, private flashMessage: FlashMessagesService) { 
     this.getMeds().subscribe(medsData => {
       this.meds = medsData.meds;
     });
@@ -33,6 +34,10 @@ export class MedService {
   addMed(med:Med){
     this.http.post<{message:string, med:Med}>(this.backendUrl, med).subscribe(medData => {
       this.meds.unshift(medData.med);
+      this.flashMessage.show('New medicine added successfully!', {
+        cssClass: 'alert-success',
+        timeout: 5000
+      });
       this.router.navigate(['/']);
     });
   }
@@ -52,6 +57,10 @@ export class MedService {
       this.meds.unshift(med);
 
       if(!isOnlyTakenEdited){
+        this.flashMessage.show('Medicine edited successfully!', {
+          cssClass: 'alert-success',
+          timeout: 5000
+        });
         this.router.navigate(['/meds/details']);
       }
     });
@@ -73,6 +82,12 @@ export class MedService {
         }
       }
       this.meds.splice(index, 1);
+
+      this.flashMessage.show('Medicine deleted successfully!', {
+        cssClass: 'alert-success',
+        timeout: 5000
+      });
+
     });
   }
 

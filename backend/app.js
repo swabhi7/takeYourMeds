@@ -230,6 +230,15 @@ app.post('/api/users/login', (req, res, next) => {
     });
 });
 
+app.get('/api/user', checkAuth, (req, res, next) => {
+    User.findOne({_id:req.userData.userId}).then(doc => {
+        res.status(200).json({
+            message: 'User fetched',
+            user: doc
+        });
+    });
+});
+
 module.exports = app;
 
 

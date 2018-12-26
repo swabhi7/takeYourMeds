@@ -4,6 +4,8 @@ import {HttpClient} from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import {FlashMessagesService} from 'angular2-flash-messages';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,7 @@ export class AuthService {
 
   backendUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private flashMessage: FlashMessagesService) { }
 
   getToken(){
     return this.token;
@@ -33,6 +35,10 @@ export class AuthService {
   createUser(authData: AuthData){
     this.http.post(this.backendUrl + '/users/signup', authData).subscribe(result => {
       //console.log(result);
+      this.flashMessage.show('Signed up successfully! Now Login.', {
+        cssClass: 'alert-success',
+        timeout: 5000
+      });
       this.router.navigate(['/login']);
     });
   }
@@ -44,6 +50,10 @@ export class AuthService {
         this.authStatus.next(true);
         this.authStatusNormalVar = true;
         this.saveAuthDataInLocalStorage(this.token);
+        this.flashMessage.show('Logged In successfully!', {
+          cssClass: 'alert-success',
+          timeout: 5000
+        });
         this.router.navigate(['/']);
       }
     });
@@ -54,7 +64,15 @@ export class AuthService {
     this.authStatus.next(false);
     this.authStatusNormalVar = false;
     this.clearAuthDataInLocalStorage();
+    this.flashMessage.show('Logged Out successfully!', {
+      cssClass: 'alert-success',
+      timeout: 5000
+    });
     this.router.navigate(['/login']);
+  }
+
+  getUser(): Observable<any>{
+    return this.http.get(this.backendUrl + '/user');
   }
 
   saveAuthDataInLocalStorage(token: string){

@@ -20,16 +20,20 @@ export class MyMedsDetailsComponent implements OnInit {
   }
 
   deleteClicked(id:any){
-    //update local meds array after deleting
-    let index:number;
-    for(let med1 of this.meds){
-      if(med1._id == id){
-        index = this.meds.indexOf(med1);
+    if(confirm('Are you sure you want to delete this med?')){
+
+      //update local meds array after deleting
+      let index:number;
+      for(let med1 of this.meds){
+        if(med1._id == id){
+          index = this.meds.indexOf(med1);
+        }
       }
+      this.meds.splice(index, 1);
+      //making the call to service to delete
+      this.medService.deleteMed(id);
+
     }
-    this.meds.splice(index, 1);
-    //making the call to service to delete
-    this.medService.deleteMed(id);
   }
 
 }

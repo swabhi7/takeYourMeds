@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MedService} from './services/med.service';
+import {FlashMessagesModule} from 'angular2-flash-messages';
 
 import { AppComponent } from './app.component';
 import { MedsComponent } from './components/meds/meds.component';
@@ -40,7 +41,8 @@ import { ContactComponent } from './components/contact/contact.component';
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FlashMessagesModule.forRoot()
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
