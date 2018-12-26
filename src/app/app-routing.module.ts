@@ -9,6 +9,8 @@ import {EditMedComponent} from './components/edit-med/edit-med.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { SignupComponent } from './components/auth/signup/signup.component';
 import { AuthGuard } from './services/auth.guard';
+import { AboutComponent } from './components/about/about.component';
+import { ContactComponent } from './components/contact/contact.component';
 
 const routes: Routes = [
   {path: '', component: MedsComponent, canActivate: [AuthGuard]},
@@ -18,6 +20,8 @@ const routes: Routes = [
   {path: 'meds/edit/:id', component: EditMedComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
+  {path: 'about', component: AboutComponent},
+  {path: 'contact', component: ContactComponent},
   {path: '**', component: PageNotFoundComponent}
 ];
 

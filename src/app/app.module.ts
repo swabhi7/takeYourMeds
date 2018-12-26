@@ -18,6 +18,8 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { SignupComponent } from './components/auth/signup/signup.component';
 import { AuthService } from './services/auth.service';
 import { AuthInterceptor } from './services/auth-interceptor';
+import { AboutComponent } from './components/about/about.component';
+import { ContactComponent } from './components/contact/contact.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { AuthInterceptor } from './services/auth-interceptor';
     AddMedsComponent,
     EditMedComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    AboutComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,

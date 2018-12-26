@@ -32,7 +32,8 @@ export class AuthService {
 
   createUser(authData: AuthData){
     this.http.post(this.backendUrl + '/users/signup', authData).subscribe(result => {
-      console.log(result);
+      //console.log(result);
+      this.router.navigate(['/login']);
     });
   }
 
