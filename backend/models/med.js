@@ -18,7 +18,8 @@ const medSchema = mongoose.Schema({
     creator: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: "User"
-    }
+    },
+    creatorEmail: String
 });
 
 module.exports = mongoose.model('Med', medSchema);

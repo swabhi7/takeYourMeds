@@ -12,7 +12,7 @@ const checkAuth = require('./check-auth');
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'dashswabhimaan@gmail.com',
+    user: 'takeyourmeds.swabhi@gmail.com',
     pass: '?wolfpack...'
   }
 });
@@ -98,8 +98,8 @@ function calEverythingAndRemindIfNeeded(){
                     if(dose.timeup){
                         if(dose.msgSent == false){
                             var mailOptions = {
-                                from: 'dashswabhimaan@gmail.com',
-                                to: 'dashswabhimaan@gmail.com',
+                                from: 'takeyourmeds.swabhi@gmail.com',
+                                to: doc.creatorEmail,
                                 subject: 'TYM Reminder',
                                 text: 'You have not taken your med - ' + doc.name + ' scheduled at - ' + dose.hh + '-' + dose.mm + ' ' + dose.amorpm
                             };
@@ -111,7 +111,9 @@ function calEverythingAndRemindIfNeeded(){
                                 console.log('Email sent: ' + info.response);
                             }
                             });
+
                             dose.msgSent = true;
+                            
                         }
                     }
                 }
@@ -152,6 +154,7 @@ app.get('/api/meds/:id', checkAuth, (req, res, next) => {
 app.post('/api/meds', checkAuth, (req, res, next) => {
     let med = new Med(req.body);
     med.creator = req.userData.userId;
+    med.creatorEmail = req.userData.email;
     console.log(med);
     med.save();
     calEverythingAndRemindIfNeeded();
@@ -168,8 +171,9 @@ app.put('/api/meds/:id', checkAuth, (req, res, next) => {
         purpose: req.body.purpose,
         composition: req.body.composition,
         toBeTakenAt: req.body.toBeTakenAt,
-        myReview: req.body.myReview
-        
+        myReview: req.body.myReview,
+        creator: req.userData.userId,
+        creatorEmail: req.userData.email
     });
     Med.updateOne({_id: req.params.id}, updatedMed).then(result => {
         calEverythingAndRemindIfNeeded();
