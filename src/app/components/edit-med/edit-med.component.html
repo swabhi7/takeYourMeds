@@ -1,6 +1,10 @@
-<div class="card card-body mb-3" *ngIf="fetchedMed">
+<div class="card" *ngIf="fetchedMed">
 
-  <h2>Edit Medicine</h2>
+    <div class="card-header bg-primary">
+        <h4 style="color: white"><strong><i class="fa fa-pencil"></i>&nbsp;&nbsp;Edit Medicine</strong></h4>
+    </div>
+
+  <div class="card-body">
 
   <form #medForm="ngForm" (ngSubmit)="onSubmit(medForm)">
     <div class="form-group">
@@ -28,8 +32,23 @@
     </div>
     <div class="form-group">
       <label>Dose per Day</label>
-      <input type="text" class="form-control" name="dose" [(ngModel)]="dose">
-      <button class="btn btn-primary" type="button" [disabled]="!dose" (click)="doseAdded($event)">Add times of Doses</button>
+      <div class="row">
+        <div class="col-md-8">
+            <input type="text" class="form-control" name="dose" [(ngModel)]="dose"
+              #doseip="ngModel"
+              required
+              pattern="^[0-9]{1,10}$"
+              [ngClass]="{'is-invalid': doseip.errors && doseip.touched}"
+            >
+            <div [hidden]="!doseip.errors?.required" class="invalid-feedback">Dose is required</div>
+            <div [hidden]="!doseip.errors?.pattern" class="invalid-feedback">Dose should be a number</div>
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-primary" type="button" [disabled]="!dose" (click)="doseAdded($event)">Add times of Doses</button>
+        </div>
+      </div>
+      
+      
     </div>
     <div *ngIf="doseAddedVar" class="form-group">
       <label>When to take (Time)</label>
@@ -62,6 +81,8 @@
     </div>
     <button [disabled]="!medForm.valid" type="submit" class="btn btn-block btn-primary mb-3">Edit Medicine</button>
   </form>
+
+</div>
 
 </div>
 
