@@ -40,7 +40,7 @@ app.use((req, res, next) => {
     next();
 });
 
-schedule.scheduleJob('0 0 * * *', () => {
+schedule.scheduleJob('30 18 * * *', () => {
     Med.find().then(docs => {
         for(let doc of docs){
             for(let dose of doc.toBeTakenAt){
@@ -55,8 +55,15 @@ schedule.scheduleJob('0 0 * * *', () => {
 function calTimeRem(time){
 
     let currentTime = new Date();
-    let currentHour = currentTime.getHours();
-    let currentMin = currentTime.getMinutes();
+    var currentOffset = currentTime.getTimezoneOffset();
+
+    var ISTOffset = 330;   // IST offset UTC +5:30 
+
+    var ISTTime = new Date(currentTime.getTime() + (ISTOffset + currentOffset)*60000);
+
+    // ISTTime now represents the time in IST coordinates
+    let currentHour = ISTTime.getHours();
+    let currentMin = ISTTime.getMinutes();
     
     let totalMin, totalCurrentMin = currentHour * 60 + currentMin;
     if(time.amorpm == 'am'){

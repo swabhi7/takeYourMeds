@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: "http://takeyourmeds-env.pgmpw5vbcw.us-east-2.elasticbeanstalk.com/api"
+  apiUrl: "http://takeyourmeds-env.ymiehawgcf.ap-south-1.elasticbeanstalk.com/api"
 };
