@@ -1,11 +1,18 @@
-<h2>Today's schedule</h2>
+<div class="card">
 
-<hr>
+<div class="card-header bg-primary">
+  <h4 style="color:white"><strong><i class="fa fa-clock-o"></i>&nbsp;&nbsp;Today's Schedule</strong></h4>
+</div>
+
+
+<div class="card-body">
 
 <div *ngIf="meds?.length > 0 && medsFetched == true">
 
   <div *ngFor="let med of meds" class="card mb-3">
-    <div class="card-header">{{med.name}}</div>
+    <div class="card-header bg-primary">
+      <h4 style="color: white"><strong><i class="fa fa-medkit"></i>&nbsp;&nbsp;{{med.name}}</strong></h4>
+    </div>
     <div class="card-body">
       <span class="lead">Purpose</span><hr> {{med.purpose}}<br><br>
       <span class="lead">Today's Doses</span> <hr>
@@ -28,6 +35,10 @@
     </div>
   </div>
 
+</div>
+
+
+</div>
 </div>
 
 <div *ngIf="medsFetched == false">

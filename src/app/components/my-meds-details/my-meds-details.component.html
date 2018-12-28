@@ -1,9 +1,18 @@
-<h3>My Medicines</h3>
-<hr>
+
+
+<div class="card">
+
+<div class="card-header bg-primary">
+  <h4 style="color: white"><strong><i class="fa fa-medkit"></i>&nbsp;&nbsp;My Medicines</strong></h4>
+</div>
+
+<div class="card-body">
+
+
 
 <div *ngFor="let med of meds" class="card mb-3">
 
-  <div class="card-header">
+  <div class="card-header bg-primary">
     
         <strong><kbd>{{med.name}}</kbd></strong> &nbsp;
         <div class="pull-right">
@@ -58,6 +67,7 @@
     </table>
   </div>
 
-  
+</div>
+</div>
 
 </div>
